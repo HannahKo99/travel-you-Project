@@ -1,6 +1,14 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
+import HomePage from '@/views/HomePage.vue'
+import DiscussionPage from '@/views/DiscussionPage.vue'
+// 引入新的找旅伴頁面
+import FindTravelerPage from '@/views/FindTravelerPage.vue'
+// 引入其他頁面，避免路由報錯
+import FeaturedItineraryPage from '@/views/FeaturedItineraryPage.vue'
+import MyItineraryPage from '@/views/MyItineraryPage.vue'
+import FavoritesPage from '@/views/FavoritesPage.vue'
+import ProfilePage from '@/views/ProfilePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,40 +20,36 @@ const router = createRouter({
     },
     {
       path: '/discussion',
-      name: 'discussion',
-      // 使用 lazy-loading 動態載入，效能較好
-      component: () => import('../views/DiscussionPage.vue'),
+      name: 'discussion', // 🎯 必須是 'discussion'
+      component: DiscussionPage,
     },
     {
       path: '/find-traveler',
-      name: 'find_traveler',
-      component: () => import('../views/FindTravelerPage.vue'),
+      name: 'find_traveler', // 🎯 必須是 'find_traveler'
+      component: FindTravelerPage,
     },
     {
-      path: '/featured',
+      path: '/featured-itinerary',
       name: 'featured_itinerary',
-      component: () => import('../views/FeaturedItineraryPage.vue'),
+      component: FeaturedItineraryPage,
     },
     {
       path: '/my-itinerary',
       name: 'my_itinerary',
-      component: () => import('../views/MyItineraryPage.vue'),
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('../views/ProfilePage.vue'),
+      component: MyItineraryPage,
     },
     {
       path: '/favorites',
       name: 'favorites',
-      component: () => import('../views/FavoritesPage.vue'),
+      component: FavoritesPage,
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfilePage,
+    },
+    // 雖然你可能還沒創建所有頁面，但先註冊路由可以避免 Sidebar 報錯。
   ],
-  // 切換頁面時自動捲動到頂部
-  scrollBehavior() {
-    return { top: 0 }
-  },
 })
 
 export default router

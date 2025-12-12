@@ -1,5 +1,5 @@
 <script setup>
-import AppFABs from '../../components/shared/AppFABs.vue'
+
 import {
   Plus as PlusIcon,
   Zap as ZapIcon,

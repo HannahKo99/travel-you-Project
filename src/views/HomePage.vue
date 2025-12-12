@@ -5,15 +5,27 @@ import {
   Users as UsersIcon,
   Heart as HeartIcon,
   MessageCircle as MessageCircleIcon,
-  Share2 as Share2Icon,
+  Repeat2 as Repeat2Icon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  // MapPinIcon 的引入已移除，解決紅字問題
 } from 'lucide-vue-next'
-import { usePostsStore } from '@/stores/posts'
+// 🔴 引入新的 Discussions Store
+import { useDiscussionsStore } from '@/stores/discussions'
+// 🔴 引入新的 Travelers Store
+import { useTravelersStore } from '@/stores/travelers'
+// 導入詳情和分享組件
+import PostDetailModal from '@/components/modals/PostDetailModal.vue'
+import ShareModal from '@/components/modals/ShareModal.vue'
 
-const postsStore = usePostsStore()
+// 🔴 初始化兩個 Store
+const discussionsStore = useDiscussionsStore()
+const travelersStore = useTravelersStore()
 const scrollContainer = ref(null)
+
+// 彈窗狀態
+const isModalOpen = ref(false)
+const selectedPost = ref(null)
+const shouldScrollToComments = ref(false)
 
 const scroll = (direction) => {
   if (scrollContainer.value) {
@@ -23,6 +35,32 @@ const scroll = (direction) => {
       behavior: 'smooth',
     })
   }
+}
+
+// 處理所有開啟貼文詳情的邏輯
+const openPostDetailModal = (post, focusComment = false) => {
+  selectedPost.value = post
+  shouldScrollToComments.value = focusComment
+  isModalOpen.value = true
+}
+
+const closePostDetailModal = () => {
+  isModalOpen.value = false
+  selectedPost.value = null
+  shouldScrollToComments.value = false
+}
+
+const isShareModalOpen = ref(false)
+const shareLink = ref('')
+
+const openShareModal = (postId) => {
+  shareLink.value = `https://tripmate.com/post/${postId}`
+  isShareModalOpen.value = true
+}
+
+const closeShareModal = () => {
+  isShareModalOpen.value = false
+  shareLink.value = ''
 }
 </script>
 
@@ -47,7 +85,7 @@ const scroll = (direction) => {
           class="flex overflow-x-auto space-x-4 pb-4 custom-scrollbar snap-x snap-mandatory scroll-smooth"
         >
           <div
-            v-for="item in postsStore.recommendations"
+            v-for="item in travelersStore.recommendations"
             :key="item.id"
             class="flex-shrink-0 w-[32%] min-w-[220px] h-48 rounded-[1.5rem] p-4 border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(31,41,55,1)] cursor-pointer hover:-translate-y-1 transition relative overflow-hidden group/card bg-gray-800 snap-start"
           >
@@ -100,7 +138,7 @@ const scroll = (direction) => {
       <div>
         <h2 class="text-xl font-bold text-amber-900 mb-6">最新動態</h2>
         <div
-          v-for="post in postsStore.discussions"
+          v-for="post in discussionsStore.discussions"
           :key="post.id"
           class="pixel-card p-5 mb-6 hover:translate-x-1 hover:translate-y-1 transition relative bg-[#fffef7]"
         >
@@ -121,27 +159,72 @@ const scroll = (direction) => {
               <div class="text-xs text-gray-400">{{ post.time }} • 討論區</div>
             </div>
           </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-2 cursor-pointer hover:text-indigo-600">
+
+          <h3
+            @click="openPostDetailModal(post, false)"
+            class="text-lg font-bold text-gray-900 mb-2 cursor-pointer hover:text-indigo-600"
+          >
             {{ post.title }}
           </h3>
+
           <p class="text-gray-600 text-sm mb-4 line-clamp-4 leading-relaxed">
             {{ post.content }}
           </p>
+
           <div class="w-full h-64 rounded-xl overflow-hidden mb-4 border-2 border-amber-100">
             <img
               :src="post.image"
               class="w-full h-full object-cover hover:scale-105 transition duration-500"
             />
           </div>
-          <div class="flex items-center text-gray-400 text-sm border-t border-gray-100 pt-3">
+
+          <div
+            v-if="post.tags && post.tags.length"
+            class="flex flex-wrap gap-2 mb-4 border-b border-gray-100 pb-3"
+          >
+            <span
+              v-for="tag in post.tags"
+              :key="tag"
+              class="text-xs font-medium text-amber-700 bg-amber-100 px-3 py-1 rounded-full cursor-pointer hover:bg-amber-200 transition"
+            >
+              #{{ tag }}
+            </span>
+          </div>
+
+          <div class="flex items-center text-gray-400 text-sm pt-1">
             <button class="flex items-center space-x-1 hover:text-red-500 transition mr-6">
               <HeartIcon class="w-4 h-4" /> <span>{{ post.likes }}</span>
             </button>
-            <button class="flex items-center space-x-1 hover:text-indigo-600 transition">
+
+            <button
+              @click="openPostDetailModal(post, true)"
+              class="flex items-center space-x-1 hover:text-indigo-600 transition mr-6"
+            >
               <MessageCircleIcon class="w-4 h-4" /> <span>{{ post.comments }}</span>
             </button>
-            <button class="ml-auto hover:text-gray-600">
-              <Share2Icon class="w-4 h-4" />
+
+            <button class="flex items-center space-x-1 hover:text-yellow-600 transition mr-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                />
+              </svg>
+            </button>
+
+            <button
+              @click="openShareModal(post.id)"
+              class="ml-auto flex items-center space-x-1 hover:text-gray-600 transition"
+            >
+              <Repeat2Icon class="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -170,6 +253,14 @@ const scroll = (direction) => {
       </div>
     </div>
   </div>
+
+  <PostDetailModal
+    v-if="isModalOpen"
+    :post="selectedPost"
+    :scroll-to-comments="shouldScrollToComments"
+    @close="closePostDetailModal"
+  />
+  <ShareModal v-if="isShareModalOpen" :post-link="shareLink" @close="closeShareModal" />
 </template>
 
 <style scoped>
