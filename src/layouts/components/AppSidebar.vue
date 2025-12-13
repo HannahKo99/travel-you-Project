@@ -54,16 +54,16 @@ function goToCollections() {
   >
     <div class="flex justify-between mb-4 pb-4 border-b-4 border-amber-300">
       <div
-        @click="goToFavorites"
         class="cursor-pointer w-[48%] aspect-square pixel-button bg-pink-300 flex flex-col items-center justify-center hover:bg-pink-400 group transition-transform active:translate-y-1"
+        @click="goToFavorites"
       >
         <HeartIcon class="w-8 h-8 text-red-600 group-hover:text-red-700 transition fill-red-600" />
         <span class="text-xs font-bold mt-1 text-black">愛心</span>
       </div>
 
       <div
-        @click="goToCollections"
         class="cursor-pointer w-[48%] aspect-square pixel-button bg-yellow-300 flex flex-col items-center justify-center hover:bg-yellow-400 group transition-transform active:translate-y-1"
+        @click="goToCollections"
       >
         <BookmarkIcon
           class="w-8 h-8 text-amber-700 group-hover:text-amber-800 transition fill-amber-700"
@@ -117,6 +117,7 @@ function goToCollections() {
   box-shadow:
     5px 5px 0px 0px rgba(139, 111, 71, 0.2),
     inset -2px -2px 0px 0px rgba(255, 255, 255, 0.3);
+  font-family: 'Press Start 2P', monospace;
 }
 
 /* 確保按鈕樣式 */

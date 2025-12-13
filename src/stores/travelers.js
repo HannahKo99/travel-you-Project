@@ -208,8 +208,7 @@ export const useTravelersStore = defineStore('travelers', () => {
         status: request.status,
         people: request.people,
         image: `https://picsum.photos/400/300?random=${i + 1}`,
-
-        // 🚨 關鍵修正：作者頭像、名稱、動物標籤
+        tag: request.tag,
         author: [
           'Jovi',
           '阿光',

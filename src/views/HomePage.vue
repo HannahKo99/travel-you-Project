@@ -9,20 +9,15 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from 'lucide-vue-next'
-// 🔴 引入新的 Discussions Store
 import { useDiscussionsStore } from '@/stores/discussions'
-// 🔴 引入新的 Travelers Store
 import { useTravelersStore } from '@/stores/travelers'
-// 導入詳情和分享組件
 import PostDetailModal from '@/components/modals/PostDetailModal.vue'
 import ShareModal from '@/components/modals/ShareModal.vue'
 
-// 🔴 初始化兩個 Store
 const discussionsStore = useDiscussionsStore()
 const travelersStore = useTravelersStore()
 const scrollContainer = ref(null)
 
-// 彈窗狀態
 const isModalOpen = ref(false)
 const selectedPost = ref(null)
 const shouldScrollToComments = ref(false)
@@ -37,7 +32,6 @@ const scroll = (direction) => {
   }
 }
 
-// 處理所有開啟貼文詳情的邏輯
 const openPostDetailModal = (post, focusComment = false) => {
   selectedPost.value = post
   shouldScrollToComments.value = focusComment
@@ -62,6 +56,39 @@ const closeShareModal = () => {
   isShareModalOpen.value = false
   shareLink.value = ''
 }
+
+// 🟢 核心功能：根據標籤文字 (如 '省錢', '攝影') 自動產生固定顏色
+const getTagColor = (tagText) => {
+  // 定義一組好看的顏色 (Tailwind classes)
+  const colors = [
+    'bg-red-500 border-red-400',
+    'bg-orange-500 border-orange-400',
+    'bg-amber-500 border-amber-400',
+    'bg-green-500 border-green-400',
+    'bg-emerald-500 border-emerald-400',
+    'bg-teal-500 border-teal-400',
+    'bg-cyan-500 border-cyan-400',
+    'bg-sky-500 border-sky-400',
+    'bg-blue-500 border-blue-400',
+    'bg-indigo-500 border-indigo-400',
+    'bg-violet-500 border-violet-400',
+    'bg-fuchsia-500 border-fuchsia-400',
+    'bg-pink-500 border-pink-400',
+    'bg-rose-500 border-rose-400',
+  ]
+
+  if (!tagText) return colors[0]
+
+  // 簡單的演算法：將文字轉成數字，確保同一個標籤永遠是同一個顏色
+  let hash = 0
+  for (let i = 0; i < tagText.length; i++) {
+    hash = tagText.charCodeAt(i) + ((hash << 5) - hash)
+  }
+
+  // 取餘數決定要用第幾個顏色
+  const index = Math.abs(hash) % colors.length
+  return colors[index]
+}
 </script>
 
 <template>
@@ -74,8 +101,8 @@ const closeShareModal = () => {
         </h2>
 
         <button
-          @click="scroll('left')"
           class="absolute left-0 top-[60%] -translate-y-1/2 z-20 bg-white/90 hover:bg-white text-amber-900 p-2 rounded-full shadow-xl backdrop-blur-sm transition hover:scale-110 -ml-4 border-2 border-amber-900 flex items-center justify-center"
+          @click="scroll('left')"
         >
           <ChevronLeftIcon class="w-6 h-6" />
         </button>
@@ -88,6 +115,7 @@ const closeShareModal = () => {
             v-for="item in travelersStore.recommendations"
             :key="item.id"
             class="flex-shrink-0 w-[32%] min-w-[220px] h-48 rounded-[1.5rem] p-4 border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(31,41,55,1)] cursor-pointer hover:-translate-y-1 transition relative overflow-hidden group/card bg-gray-800 snap-start"
+            @click="openPostDetailModal(item, false)"
           >
             <img
               :src="item.image"
@@ -98,10 +126,14 @@ const closeShareModal = () => {
             <div class="relative z-10 h-full flex flex-col justify-between">
               <div class="flex justify-between items-start">
                 <span
-                  class="bg-indigo-500 text-white border-2 border-white px-2 py-0.5 text-[10px] font-bold rounded -rotate-2 shadow-sm"
+                  :class="[
+                    getTagColor(item.tag),
+                    'text-white border-2 border-white/50 px-2 py-0.5 text-[10px] font-bold rounded -rotate-2 shadow-sm',
+                  ]"
                 >
                   {{ item.tag }}
                 </span>
+
                 <div
                   class="flex items-center bg-red-500 text-white border-2 border-white px-2 py-0.5 text-[10px] font-bold rounded rotate-2 shadow-sm"
                 >
@@ -128,8 +160,8 @@ const closeShareModal = () => {
         </div>
 
         <button
-          @click="scroll('right')"
           class="absolute right-0 top-[60%] -translate-y-1/2 z-20 bg-white/90 hover:bg-white text-amber-900 p-2 rounded-full shadow-xl backdrop-blur-sm transition hover:scale-110 -mr-4 border-2 border-amber-900 flex items-center justify-center"
+          @click="scroll('right')"
         >
           <ChevronRightIcon class="w-6 h-6" />
         </button>
@@ -161,8 +193,8 @@ const closeShareModal = () => {
           </div>
 
           <h3
-            @click="openPostDetailModal(post, false)"
             class="text-lg font-bold text-gray-900 mb-2 cursor-pointer hover:text-indigo-600"
+            @click="openPostDetailModal(post, false)"
           >
             {{ post.title }}
           </h3>
@@ -197,8 +229,8 @@ const closeShareModal = () => {
             </button>
 
             <button
-              @click="openPostDetailModal(post, true)"
               class="flex items-center space-x-1 hover:text-indigo-600 transition mr-6"
+              @click="openPostDetailModal(post, true)"
             >
               <MessageCircleIcon class="w-4 h-4" /> <span>{{ post.comments }}</span>
             </button>
@@ -221,8 +253,8 @@ const closeShareModal = () => {
             </button>
 
             <button
-              @click="openShareModal(post.id)"
               class="ml-auto flex items-center space-x-1 hover:text-gray-600 transition"
+              @click="openShareModal(post.id)"
             >
               <Repeat2Icon class="w-4 h-4" />
             </button>
