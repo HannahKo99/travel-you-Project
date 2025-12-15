@@ -1,5 +1,5 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 // 為了確保圖片能被正確打包引用，建議使用 import 方式 (Vite/Webpack)
 // 如果您的開發環境支援直接路徑引用，也可以直接寫字串
@@ -228,6 +228,15 @@ export const useUserStore = defineStore('user', () => {
     bio: '海綿寶寶最好的朋友！',
   })
 
+  //4.登入(出)判斷
+  const isLoggedIn = ref(false)
+  const login = () => {
+    isLoggedIn.value = true
+  }
+  const logout = () => {
+    isLoggedIn.value = false
+  }
+
   // 更新封面圖
   const updateCoverImage = (url) => {
     userProfile.value.coverImage = url
@@ -246,5 +255,9 @@ export const useUserStore = defineStore('user', () => {
     userProfile,
     updateCoverImage,
     updateAvatar,
+    //登入(出)狀態
+    isLoggedIn,
+    login,
+    logout,
   }
 })

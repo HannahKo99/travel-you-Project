@@ -26,7 +26,7 @@ const handleSelectFindTraveler = () => {
   isPostingModalOpen.value = false
 }
 const handleQuickAction = () => {
-  alert('快速行動 (功能開發中)')
+  alert('抽卡功能開發中')
 }
 
 const handleTogglePrivateChat = () => {

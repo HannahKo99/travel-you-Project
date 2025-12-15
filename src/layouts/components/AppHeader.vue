@@ -1,17 +1,17 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import {
-  Search as SearchIcon,
   Bell as BellIcon,
-  ShoppingCart as ShoppingCartIcon,
-  Menu as MenuIcon,
-  User as UserIcon,
-  Settings as SettingsIcon,
   LogOut as LogOutIcon,
+  Menu as MenuIcon,
   Navigation2 as NavigationIcon,
+  Search as SearchIcon,
+  Settings as SettingsIcon,
+  ShoppingCart as ShoppingCartIcon,
+  User as UserIcon,
 } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -33,11 +33,16 @@ const goToProfile = () => {
   router.push('/profile') // 假設您的路由設定為 /profile
 }
 
+//登入頁面
+const goToLogin = () => {
+  router.push('/login')
+}
+
 const handleLogout = () => {
   if (confirm('確定要登出嗎？')) {
-    alert('已登出')
+    userStore.logout() //這邊是 store 的 layout 函數
     closeMenu()
-    // router.push('/login') // 之後可以加
+    router.push('/') //登出後跳轉回首頁
   }
 }
 </script>
@@ -76,7 +81,16 @@ const handleLogout = () => {
         <ShoppingCartIcon class="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
       </button>
 
-      <div class="relative">
+      <div v-if="!userStore.isLoggedIn" class="flex items-center">
+        <button
+          class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold"
+          @click="goToLogin"
+        >
+          登入/註冊
+        </button>
+      </div>
+
+      <div v-else class="relative">
         <button
           class="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg border-2 border-transparent hover:border-indigo-300 transition overflow-hidden bg-indigo-100"
           @click="toggleMenu"
