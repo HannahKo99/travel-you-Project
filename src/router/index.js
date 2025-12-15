@@ -10,6 +10,7 @@ import FeaturedItineraryPage from '@/views/FeaturedItineraryPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
 import MyItineraryPage from '@/views/MyItineraryPage.vue'
 import ProfilePage from '@/views/ProfilePage.vue'
+import ShoppingCart from '@/views/ShoppingCart.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +56,11 @@ const router = createRouter({
       component: LoginPage,
     },
     // 雖然你可能還沒創建所有頁面，但先註冊路由可以避免 Sidebar 報錯。
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: ShoppingCart,
+    },
   ],
 })
 
