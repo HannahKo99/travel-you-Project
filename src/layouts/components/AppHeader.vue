@@ -77,9 +77,9 @@ const handleLogout = () => {
         <BellIcon class="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
       </button>
 
-      <button class="p-2 hover:bg-gray-100 rounded-full transition">
+      <router-link to="/cart" class="p-2 hover:bg-gray-100 rounded-full transition">
         <ShoppingCartIcon class="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
-      </button>
+      </router-link>
 
       <div v-if="!userStore.isLoggedIn" class="flex items-center">
         <button
