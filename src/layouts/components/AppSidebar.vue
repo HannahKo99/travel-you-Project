@@ -1,6 +1,6 @@
 <script setup>
+import { Bookmark as BookmarkIcon, Heart as HeartIcon, Pin as PinIcon } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
-import { Pin as PinIcon, Heart as HeartIcon, Bookmark as BookmarkIcon } from 'lucide-vue-next'
 
 const router = useRouter()
 
@@ -50,11 +50,11 @@ function goToCollections() {
 
 <template>
   <aside
-    class="fixed left-0 top-16 md:top-18 w-64 p-4 hidden lg:flex flex-col z-40 h-[calc(100vh-4rem)] md:h-[calc(100vh-4.5rem)] custom-scrollbar overflow-y-auto aside-nav"
+    class="fixed left-0 top-20 md:top-18 w-64 p-4 hidden lg:flex flex-col z-40 h-[calc(100vh-4rem)] md:h-[calc(100vh-4.5rem)] custom-scrollbar overflow-y-auto aside-nav"
   >
     <div class="flex justify-between mb-4 pb-4 border-b-4 border-amber-300">
       <div
-        class="cursor-pointer w-[48%] aspect-square pixel-button bg-pink-300 flex flex-col items-center justify-center hover:bg-pink-400 group transition-transform active:translate-y-1"
+        class="cursor-pointer w-[48%] aspect-square flex flex-col items-center justify-center pixel-button group transition-transform active:translate-y-1"
         @click="goToFavorites"
       >
         <HeartIcon class="w-8 h-8 text-red-600 group-hover:text-red-700 transition fill-red-600" />
@@ -112,7 +112,6 @@ function goToCollections() {
 
 <style scoped>
 .aside-nav {
-  background: linear-gradient(180deg, #e8d5c4 0%, #d4c4b0 50%, #c9b8a5 100%);
   border: 4px solid #8b6f47;
   box-shadow:
     5px 5px 0px 0px rgba(139, 111, 71, 0.2),
@@ -121,11 +120,12 @@ function goToCollections() {
 }
 
 /* 確保按鈕樣式 */
-.pixel-button {
+.pixel-button:hover {
   border: 3px solid #8b6f47;
   box-shadow:
     3px 3px 0px 0px rgba(139, 111, 71, 0.3),
     inset -1px -1px 0px 0px rgba(255, 255, 255, 0.4);
+  background-color: pink;
 }
 .pixel-button:active {
   box-shadow: none;
