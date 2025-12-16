@@ -1,11 +1,11 @@
 <script setup>
+import PrivateChatWindow from '@/components/chat/PrivateChatWindow.vue'
+import PostingChoiceModal from '@/components/modals/PostingChoiceModal.vue'
+import AppFABs from '@/components/shared/AppFABs.vue'
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import AppSidebar from './components/AppSidebar.vue'
-import AppFABs from '@/components/shared/AppFABs.vue'
-import PostingChoiceModal from '@/components/modals/PostingChoiceModal.vue'
-import PrivateChatWindow from '@/components/chat/PrivateChatWindow.vue'
 // 1. 引入 AI 聊天視窗
 import ChatWindow from '@/components/chat/ChatWindow.vue'
 
@@ -74,21 +74,9 @@ const handleToggleAiChat = () => {
 
 <style scoped>
 .pixel-bg {
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 8px,
-      rgba(0, 0, 0, 0.02) 8px,
-      rgba(0, 0, 0, 0.02) 16px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 8px,
-      rgba(0, 0, 0, 0.02) 8px,
-      rgba(0, 0, 0, 0.02) 16px
-    );
-  background-size: 32px 32px;
+  background-image: url('https://images.unsplash.com/photo-1618083707368-b3823daa2726?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>

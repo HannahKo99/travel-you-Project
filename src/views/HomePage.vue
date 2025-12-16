@@ -1,18 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import PostDetailModal from '@/components/modals/PostDetailModal.vue'
+import ShareModal from '@/components/modals/ShareModal.vue'
+import { useDiscussionsStore } from '@/stores/discussions'
+import { useTravelersStore } from '@/stores/travelers'
 import {
-  Sparkles as SparklesIcon,
-  Users as UsersIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
   Heart as HeartIcon,
   MessageCircle as MessageCircleIcon,
   Repeat2 as Repeat2Icon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
+  Sparkles as SparklesIcon,
+  Users as UsersIcon,
 } from 'lucide-vue-next'
-import { useDiscussionsStore } from '@/stores/discussions'
-import { useTravelersStore } from '@/stores/travelers'
-import PostDetailModal from '@/components/modals/PostDetailModal.vue'
-import ShareModal from '@/components/modals/ShareModal.vue'
+import { ref } from 'vue'
 
 const discussionsStore = useDiscussionsStore()
 const travelersStore = useTravelersStore()
@@ -119,7 +119,7 @@ const getTagColor = (tagText) => {
           >
             <img
               :src="item.image"
-              class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover/card:scale-110 opacity-90"
+              class="absolute inset-0 w-full h-full object-contain transition duration-700 group-hover/card:scale-110 opacity-90"
             />
             <div class="absolute inset-0 bg-black/50 group-hover/card:bg-black/60 transition"></div>
 

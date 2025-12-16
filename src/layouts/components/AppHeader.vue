@@ -1,10 +1,10 @@
 <script setup>
+import TripMateIcon from '@/assets/icons/TripMate_icon.png'
 import { useUserStore } from '@/stores/user'
 import {
   Bell as BellIcon,
   LogOut as LogOutIcon,
   Menu as MenuIcon,
-  Navigation2 as NavigationIcon,
   Search as SearchIcon,
   Settings as SettingsIcon,
   ShoppingCart as ShoppingCartIcon,
@@ -48,28 +48,34 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <header
-    class="fixed top-0 left-0 right-0 pixel-header z-50 h-16 md:h-18 flex items-center px-3 md:px-4"
-  >
+  <header class="fixed top-0 left-0 right-2 z-50 h-16 md:h-18 flex items-center">
     <div
-      class="cursor-pointer flex items-center space-x-1 md:space-x-2 mr-2 md:mr-8"
+      class="cursor-pointer flex header-logo items-center md:space-x-2 mr-2 md:mr-8"
       @click="router.push('/')"
     >
-      <NavigationIcon
-        class="w-6 h-6 md:w-8 md:h-8 text-indigo-600 fill-indigo-600 transform rotate-45"
+      <img
+        :src="TripMateIcon"
+        alt="TripMate Logo"
+        class="w-30 h-auto md:w-32 md:h-auto object-contain pbject-center"
       />
-      <span class="text-lg md:text-2xl font-black text-amber-900 tracking-tight logo-text">
-        🐱 TripMate
+      <span
+        class="relative text-[28px] md:text-[28px] font-另一個好看一點的字體 font-black bg-gradient-to-b from-white to- bg-clip-text text-transparent logo-text before:content-['找旅伴'] before:absolute before:left-0 before:top-0 before:z-[-1] before:text-[35px] before:md:text-[35px] before:font-另一個好看一點的字體 before:font-black before:stroke-gradient"
+      >
+        找旅伴
       </span>
     </div>
 
-    <div class="hidden lg:flex flex-1 max-w-xl relative">
+    <div class="hidden lg:flex max-w-xl absolute left-1/2 -translate-x-1/2">
       <input
         type="text"
         placeholder="搜尋文章、行程..."
-        class="w-full py-3 pl-5 pr-12 pixel-input bg-white text-base rounded-none"
+        class="relative w-[400px] h-[55px] pixel-input bg-white text-base rounded-none text-center"
       />
-      <SearchIcon class="absolute right-4 top-3.5 w-6 h-6 text-gray-600" />
+      <div class="flex items-center ml-2">
+        <button class="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
+          <SearchIcon class="relative text-gray-600" />
+        </button>
+      </div>
     </div>
 
     <div class="flex items-center space-x-2 md:space-x-4 ml-auto">
@@ -150,21 +156,16 @@ const handleLogout = () => {
 </template>
 
 <style scoped>
-.pixel-header {
-  background: linear-gradient(180deg, #ffd5dc 0%, #ffc0cb 100%);
-  border-bottom: 4px solid #d4a574;
-  box-shadow: 0 4px 0px 0px rgba(139, 111, 71, 0.2);
+.header-logo {
+  padding: 25px 50px 15px 10px;
+  border-radius: 0px 0px 0px 0px;
+  background: linear-gradient(to bottom, rgb(106, 157, 211), rgba(188, 188, 188, 0.755));
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
 }
-
-.logo-text {
-  text-shadow:
-    2px 2px 0px rgba(255, 255, 255, 0.8),
-    -1px -1px 0px rgba(139, 111, 71, 0.3);
-}
-
 .pixel-input {
-  border: 3px solid #c9a882;
-  box-shadow: inset 2px 2px 0px 0px rgba(139, 111, 71, 0.1);
+  border: 3px solid rgb(106, 157, 211);
+  box-shadow: inset 2px 2px 0px 1px rgba(188, 188, 188, 0.755);
+  font-size: 16px;
 }
 
 .pixel-dropdown {
